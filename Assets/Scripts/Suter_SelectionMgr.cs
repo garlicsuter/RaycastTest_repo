@@ -34,9 +34,8 @@ public class Suter_SelectionMgr : MonoBehaviour
                 if (Input.GetMouseButton(0))
                 {
                     selectedObject = hit.collider.gameObject;
-                    Debug.Log("gameObject: " + selectedObject);
+                    Debug.Log("gameObject: " + selectedObject + "is held.");
                     isHeld = true;
-                    Debug.Log("isHeld: " + isHeld);
                     selectedObject.gameObject.GetComponent<BoxCollider>().enabled = false;
                     selectedObject.gameObject.GetComponent<Rigidbody>().useGravity = false;
                     hit.transform.position = theDest.position;
@@ -51,27 +50,33 @@ public class Suter_SelectionMgr : MonoBehaviour
                         selectionRenderer.material = highlightMaterial;
                     }
                 }
-                //if (Input.GetMouseButton(0) == false && isHeld == true)
-                if (Input.GetMouseButtonUp(0))
+                if (isHeld)
                 {
-
-
-                    Debug.Log("Let go of gameObject: " + selectedObject);
-                    if (selectedObject != null)
-                    {
-                        isHeld = false;
-                        hit.transform.parent = null;
-                        selectedObject.GetComponent<Rigidbody>().useGravity = true;
-                        Debug.Log("Mouse UP");
-                        selectedObject.GetComponent<BoxCollider>().enabled = true;
-                    }
-                  
+                    selection.gameObject.transform.position = theDest.position;
+                    Debug.Log("FOLLOW ME");
                 }
-                
 
                 _selection = selection;
             }
-              
+           
+
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            isHeld = false;
+
+            Debug.Log("LET GO of gameObject: " + selectedObject);
+
+
+        }
+
+        if (isHeld == false && selectedObject != null)
+        {
+            Debug.Log("SELECTED OBJECT: " + selectedObject);
+            selectedObject.transform.parent = null;
+            selectedObject.gameObject.GetComponent<Rigidbody>().useGravity = true;
+            Debug.Log("Mouse UP");
+            selectedObject.gameObject.GetComponent<BoxCollider>().enabled = true;
         }
     }
 
